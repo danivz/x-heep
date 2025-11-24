@@ -333,11 +333,27 @@ module cpu_subsystem
 
     // instantiate the core
     cv32e40p_top #(
-        .COREV_PULP      (COREV_PULP),
-        .COREV_CLUSTER   (0),
-        .FPU             (FPU),
-        .ZFINX           (ZFINX),
-        .NUM_MHPMCOUNTERS(NUM_MHPMCOUNTERS)
+% if cpu.is_defined("rv32f"):
+        .FPU(${cpu.get_sv_str("rv32f")}),
+% endif
+% if cpu.is_defined("rv32f_addmul_lat"):
+        .FPU_ADDMUL_LAT(${cpu.get_sv_str("rv32f_addmul_lat")})
+% endif
+% if cpu.is_defined("rv32f_compconv_lat"):
+        .FPU_OTHERS_LAT(${cpu.get_sv_str("rv32f_compconv_lat")})
+% endif
+% if cpu.is_defined("rv32zfinx"):
+        .ZFINX(${cpu.get_sv_str("rv32zfinx")}),
+% endif
+% if cpu.is_defined("rv32xcv"):
+        .COREV_PULP(${cpu.get_sv_str("rv32xcv")}),
+% endif
+% if cpu.is_defined("rv32xcvelw"): # Disabled. Use ${cpu.get_sv_str("rv32xcvelw")} if needed
+        .COREV_CLUSTER(0)
+% endif
+% if cpu.is_defined("num_mhpmcounters"):
+        .NUM_MHPMCOUNTERS(${cpu.get_sv_str("num_mhpmcounters")}),
+% endif
     ) cv32e40p_top_i (
         .clk_i (clk_i),
         .rst_ni(rst_ni),
