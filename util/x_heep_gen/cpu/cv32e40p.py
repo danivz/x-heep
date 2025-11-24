@@ -14,7 +14,7 @@ class cv32e40p(CPU):
         rv32zfinx=None,
         rv32xcv=None,
         rv32xcvelw=None,
-        num_mhpmcounters=None
+        num_mhpmcounters=None,
     ):
         super().__init__("cv32e40p")
 
