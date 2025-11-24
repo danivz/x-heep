@@ -6,8 +6,16 @@ class cv32e40p(CPU):
     Represents the CV32E40P CPU configuration with optional parameters.
     """
 
-    def __init__(self, rv32f=None, rv32f_addmul_lat=None, rv32f_compconv_lat=None,
-                rv32zfinx=None, rv32xcv=None, rv32xcvelw=None, num_mhpmcounters=None):
+    def __init__(
+        self,
+        rv32f=None,
+        rv32f_addmul_lat=None,
+        rv32f_compconv_lat=None,
+        rv32zfinx=None,
+        rv32xcv=None,
+        rv32xcvelw=None,
+        num_mhpmcounters=None,
+    ):
         super().__init__("cv32e40p")
 
         if rv32f is not None:
@@ -22,7 +30,7 @@ class cv32e40p(CPU):
                 raise ValueError(f"rv32f must be 0, 1, True, or False, got '{rv32f}'")
 
             self.params["rv32f"] = bool(rv32f)
-        
+
         if rv32f_addmul_lat is not None:
             if isinstance(rv32f_addmul_lat, str):
                 try:
@@ -33,10 +41,12 @@ class cv32e40p(CPU):
                     )
 
             if rv32f_addmul_lat < 0:
-                raise ValueError(f"rv32f_addmul_lat must be a possitive number, got '{rv32f_addmul_lat}'")
+                raise ValueError(
+                    f"rv32f_addmul_lat must be a possitive number, got '{rv32f_addmul_lat}'"
+                )
 
             self.params["rv32f_addmul_lat"] = rv32f_addmul_lat
-        
+
         if rv32f_compconv_lat is not None:
             if isinstance(rv32f_compconv_lat, str):
                 try:
@@ -47,7 +57,9 @@ class cv32e40p(CPU):
                     )
 
             if rv32f_compconv_lat < 0:
-                raise ValueError(f"rv32f_compconv_lat must be a possitive number, got '{rv32f_compconv_lat}'")
+                raise ValueError(
+                    f"rv32f_compconv_lat must be a possitive number, got '{rv32f_compconv_lat}'"
+                )
 
             self.params["rv32f_compconv_lat"] = rv32f_compconv_lat
 
@@ -62,10 +74,12 @@ class cv32e40p(CPU):
                 rv32zfinx = rv32zfinx.lower() in ("true", "1")
 
             if rv32zfinx not in (0, 1, True, False):
-                raise ValueError(f"rv32zfinx must be 0, 1, True, or False, got '{rv32zfinx}'")
+                raise ValueError(
+                    f"rv32zfinx must be 0, 1, True, or False, got '{rv32zfinx}'"
+                )
 
             self.params["rv32zfinx"] = bool(rv32zfinx)
-        
+
         if rv32xcv is not None:
             if isinstance(rv32xcv, str):
                 if rv32xcv.lower() not in ("true", "false", "1", "0"):
@@ -75,10 +89,12 @@ class cv32e40p(CPU):
                 rv32xcv = rv32xcv.lower() in ("true", "1")
 
             if rv32xcv not in (0, 1, True, False):
-                raise ValueError(f"rv32xcv must be 0, 1, True, or False, got '{rv32xcv}'")
+                raise ValueError(
+                    f"rv32xcv must be 0, 1, True, or False, got '{rv32xcv}'"
+                )
 
             self.params["rv32xcv"] = bool(rv32xcv)
-        
+
         if rv32xcvelw is not None:
             if isinstance(rv32xcvelw, str):
                 if rv32xcvelw.lower() not in ("true", "false", "1", "0"):
@@ -88,10 +104,12 @@ class cv32e40p(CPU):
                 rv32xcvelw = rv32xcvelw.lower() in ("true", "1")
 
             if rv32xcvelw not in (0, 1, True, False):
-                raise ValueError(f"rv32xcvelw must be 0, 1, True, or False, got '{rv32xcvelw}'")
+                raise ValueError(
+                    f"rv32xcvelw must be 0, 1, True, or False, got '{rv32xcvelw}'"
+                )
 
             self.params["rv32xcvelw"] = bool(rv32xcvelw)
-        
+
         if num_mhpmcounters is not None:
             if isinstance(num_mhpmcounters, str):
                 try:
@@ -102,7 +120,9 @@ class cv32e40p(CPU):
                     )
 
             if num_mhpmcounters < 0:
-                raise ValueError(f"num_mhpmcounters must be a possitive number, got '{num_mhpmcounters}'")
+                raise ValueError(
+                    f"num_mhpmcounters must be a possitive number, got '{num_mhpmcounters}'"
+                )
 
             self.params["num_mhpmcounters"] = num_mhpmcounters
 
