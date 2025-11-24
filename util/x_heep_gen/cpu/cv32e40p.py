@@ -14,7 +14,7 @@ class cv32e40p(CPU):
         rv32zfinx=None,
         rv32xcv=None,
         rv32xcvelw=None,
-        num_mhpmcounters=None,
+        num_mhpmcounters=None
     ):
         super().__init__("cv32e40p")
 
@@ -42,7 +42,7 @@ class cv32e40p(CPU):
 
             if rv32f_addmul_lat < 0:
                 raise ValueError(
-                    f"rv32f_addmul_lat must be a possitive number, got '{rv32f_addmul_lat}'"
+                    f"rv32f_addmul_lat must be a positive number, got '{rv32f_addmul_lat}'"
                 )
 
             self.params["rv32f_addmul_lat"] = rv32f_addmul_lat
@@ -58,7 +58,7 @@ class cv32e40p(CPU):
 
             if rv32f_compconv_lat < 0:
                 raise ValueError(
-                    f"rv32f_compconv_lat must be a possitive number, got '{rv32f_compconv_lat}'"
+                    f"rv32f_compconv_lat must be a positive number, got '{rv32f_compconv_lat}'"
                 )
 
             self.params["rv32f_compconv_lat"] = rv32f_compconv_lat
@@ -121,7 +121,7 @@ class cv32e40p(CPU):
 
             if num_mhpmcounters < 0:
                 raise ValueError(
-                    f"num_mhpmcounters must be a possitive number, got '{num_mhpmcounters}'"
+                    f"num_mhpmcounters must be a positive number, got '{num_mhpmcounters}'"
                 )
 
             self.params["num_mhpmcounters"] = num_mhpmcounters
