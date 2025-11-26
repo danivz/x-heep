@@ -8,107 +8,125 @@ class cv32e40p(CPU):
 
     def __init__(
         self,
-        rv32f=None,
-        rv32f_addmul_lat=None,
-        rv32f_compconv_lat=None,
-        rv32zfinx=None,
-        rv32xcv=None,
-        rv32xcvelw=None,
+        fpu=None,
+        fpu_addmul_lat=None,
+        fpu_others_lat=None,
+        zfinx=None,
+        corev_pulp=None,
+        corev_cluster=None,
         num_mhpmcounters=None,
     ):
         super().__init__("cv32e40p")
 
-        if rv32f is not None:
-            if isinstance(rv32f, str):
-                if rv32f.lower() not in ("true", "false", "1", "0"):
-                    raise ValueError(
-                        f"rv32f must be 0, 1, True, or False, got '{rv32f}'"
-                    )
-                rv32f = rv32f.lower() in ("true", "1")
+        if fpu is not None:
+            if isinstance(fpu, str):
+                if fpu.lower() not in ("true", "false", "1", "0"):
+                    raise ValueError(f"FPU must be 0, 1, True, or False, got '{fpu}'")
+                fpu = fpu.lower() in ("true", "1")
 
-            if rv32f not in (0, 1, True, False):
-                raise ValueError(f"rv32f must be 0, 1, True, or False, got '{rv32f}'")
+            if fpu not in (0, 1, True, False):
+                raise ValueError(f"FPU must be 0, 1, True, or False, got '{fpu}'")
 
-            self.params["rv32f"] = bool(rv32f)
+            self.params["fpu"] = bool(fpu)
 
-        if rv32f_addmul_lat is not None:
-            if isinstance(rv32f_addmul_lat, str):
+        else:
+            self.params["fpu"] = False
+
+        if fpu_addmul_lat is not None:
+            if fpu is None or fpu in (0, False):
+                raise ValueError("FPU_ADDMUL_LAT requires FPU enabled")
+            if isinstance(fpu_addmul_lat, str):
                 try:
-                    rv32f_addmul_lat = int(rv32f_addmul_lat.lower())
+                    fpu_addmul_lat = int(fpu_addmul_lat.lower())
                 except:
                     raise ValueError(
-                        f"rv32f_addmul_lat must be a number, got '{rv32f_addmul_lat}'"
+                        f"FPU_ADDMUL_LAT must be a number, got '{fpu_addmul_lat}'"
                     )
 
-            if rv32f_addmul_lat < 0:
+            if fpu_addmul_lat < 0:
                 raise ValueError(
-                    f"rv32f_addmul_lat must be a positive number, got '{rv32f_addmul_lat}'"
+                    f"FPU_ADDMUL_LAT must be a positive number, got '{fpu_addmul_lat}'"
                 )
 
-            self.params["rv32f_addmul_lat"] = rv32f_addmul_lat
+            self.params["fpu_addmul_lat"] = fpu_addmul_lat
 
-        if rv32f_compconv_lat is not None:
-            if isinstance(rv32f_compconv_lat, str):
+        else:
+            self.params["fpu_addmul_lat"] = 0
+
+        if fpu_others_lat is not None:
+            if fpu is None or fpu in (0, False):
+                raise ValueError("FPU_OTHERS_LAT requires FPU enabled")
+            if isinstance(fpu_others_lat, str):
                 try:
-                    rv32f_compconv_lat = int(rv32f_compconv_lat.lower())
+                    fpu_others_lat = int(fpu_others_lat.lower())
                 except:
                     raise ValueError(
-                        f"rv32f_compconv_lat must be a number, got '{rv32f_compconv_lat}'"
+                        f"FPU_OTHERS_LAT must be a number, got '{fpu_others_lat}'"
                     )
 
-            if rv32f_compconv_lat < 0:
+            if fpu_others_lat < 0:
                 raise ValueError(
-                    f"rv32f_compconv_lat must be a positive number, got '{rv32f_compconv_lat}'"
+                    f"FPU_OTHERS_LAT must be a positive number, got '{fpu_others_lat}'"
                 )
 
-            self.params["rv32f_compconv_lat"] = rv32f_compconv_lat
+            self.params["fpu_others_lat"] = fpu_others_lat
 
-        if rv32zfinx is not None:
-            if rv32f is None or rv32f in (0, False):
-                raise ValueError("rv32zfinx requires rv32f enabled")
-            if isinstance(rv32zfinx, str):
-                if rv32zfinx.lower() not in ("true", "false", "1", "0"):
+        else:
+            self.params["fpu_others_lat"] = 0
+
+        if zfinx is not None:
+            if fpu is None or fpu in (0, False):
+                raise ValueError("ZFINX requires FPU enabled")
+            if isinstance(zfinx, str):
+                if zfinx.lower() not in ("true", "false", "1", "0"):
                     raise ValueError(
-                        f"rv32zfinx must be 0, 1, True, or False, got '{rv32zfinx}'"
+                        f"ZFINX must be 0, 1, True, or False, got '{zfinx}'"
                     )
-                rv32zfinx = rv32zfinx.lower() in ("true", "1")
+                zfinx = zfinx.lower() in ("true", "1")
 
-            if rv32zfinx not in (0, 1, True, False):
-                raise ValueError(
-                    f"rv32zfinx must be 0, 1, True, or False, got '{rv32zfinx}'"
-                )
+            if zfinx not in (0, 1, True, False):
+                raise ValueError(f"ZFINX must be 0, 1, True, or False, got '{zfinx}'")
 
-            self.params["rv32zfinx"] = bool(rv32zfinx)
+            self.params["zfinx"] = bool(zfinx)
 
-        if rv32xcv is not None:
-            if isinstance(rv32xcv, str):
-                if rv32xcv.lower() not in ("true", "false", "1", "0"):
+        else:
+            self.params["zfinx"] = False
+
+        if corev_pulp is not None:
+            if isinstance(corev_pulp, str):
+                if corev_pulp.lower() not in ("true", "false", "1", "0"):
                     raise ValueError(
-                        f"rv32xcv must be 0, 1, True, or False, got '{rv32xcv}'"
+                        f"COREV_PULP must be 0, 1, True, or False, got '{corev_pulp}'"
                     )
-                rv32xcv = rv32xcv.lower() in ("true", "1")
+                corev_pulp = corev_pulp.lower() in ("true", "1")
 
-            if rv32xcv not in (0, 1, True, False):
+            if corev_pulp not in (0, 1, True, False):
                 raise ValueError(
-                    f"rv32xcv must be 0, 1, True, or False, got '{rv32xcv}'"
+                    f"COREV_PULP must be 0, 1, True, or False, got '{corev_pulp}'"
                 )
 
-            self.params["rv32xcv"] = bool(rv32xcv)
+            self.params["corev_pulp"] = bool(corev_pulp)
 
-        if rv32xcvelw is not None:
-            if isinstance(rv32xcvelw, str):
-                if rv32xcvelw.lower() not in ("true", "false", "1", "0"):
+        else:
+            self.params["corev_pulp"] = False
+
+        if corev_cluster is not None:
+            if isinstance(corev_cluster, str):
+                if corev_cluster.lower() not in ("true", "false", "1", "0"):
                     raise ValueError(
-                        f"rv32xcvelw must be 0, 1, True, or False, got '{rv32xcvelw}'"
+                        f"COREV_CLUSTER must be 0, 1, True, or False, got '{corev_cluster}'"
                     )
-                rv32xcvelw = rv32xcvelw.lower() in ("true", "1")
+                corev_cluster = corev_cluster.lower() in ("true", "1")
 
-            if rv32xcvelw not in (0, 1, True, False):
+            if corev_cluster not in (0, 1, True, False):
                 raise ValueError(
-                    f"rv32xcvelw must be 0, 1, True, or False, got '{rv32xcvelw}'"
+                    f"COREV_CLUSTER must be 0, 1, True, or False, got '{corev_cluster}'"
                 )
 
-            self.params["rv32xcvelw"] = bool(rv32xcvelw)
+            self.params["corev_cluster"] = bool(corev_cluster)
+
+        else:
+            self.params["corev_cluster"] = False
 
         if num_mhpmcounters is not None:
             if isinstance(num_mhpmcounters, str):
@@ -116,15 +134,18 @@ class cv32e40p(CPU):
                     num_mhpmcounters = int(num_mhpmcounters.lower())
                 except:
                     raise ValueError(
-                        f"num_mhpmcounters must be a number, got '{num_mhpmcounters}'"
+                        f"NUM_MHPMCOUNTERS must be a number, got '{num_mhpmcounters}'"
                     )
 
             if num_mhpmcounters < 0:
                 raise ValueError(
-                    f"num_mhpmcounters must be a positive number, got '{num_mhpmcounters}'"
+                    f"NUM_MHPMCOUNTERS must be a positive number, got '{num_mhpmcounters}'"
                 )
 
             self.params["num_mhpmcounters"] = num_mhpmcounters
+
+        else:
+            self.params["num_mhpmcounters"] = 1
 
     def get_sv_str(self, param_name: str) -> str:
         """
@@ -136,13 +157,13 @@ class cv32e40p(CPU):
             return ""
 
         value = self.params[param_name]
-        if param_name == "rv32f":
+        if param_name == "fpu":
             return "1" if value else "0"
-        elif param_name == "rv32zfinx":
+        elif param_name == "zfinx":
             return "1" if value else "0"
-        elif param_name == "rv32xcv":
+        elif param_name == "corev_pulp":
             return "1" if value else "0"
-        elif param_name == "rv32xcvelw":
+        elif param_name == "corev_cluster":
             return "1" if value else "0"
         else:
             return str(value)

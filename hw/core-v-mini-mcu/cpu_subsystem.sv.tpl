@@ -333,26 +333,26 @@ module cpu_subsystem
 
     // instantiate the core
     cv32e40p_top #(
-% if cpu.is_defined("rv32f"):
-        .FPU(${cpu.get_sv_str("rv32f")}),
+% if cpu.is_defined("fpu"):
+        .FPU(${cpu.get_sv_str("fpu")}),
 % endif
-% if cpu.is_defined("rv32f_addmul_lat"):
-        .FPU_ADDMUL_LAT(${cpu.get_sv_str("rv32f_addmul_lat")})
+% if cpu.is_defined("fpu_addmul_lat"):
+        .FPU_ADDMUL_LAT(${cpu.get_sv_str("fpu_addmul_lat")}),
 % endif
-% if cpu.is_defined("rv32f_compconv_lat"):
-        .FPU_OTHERS_LAT(${cpu.get_sv_str("rv32f_compconv_lat")})
+% if cpu.is_defined("fpu_others_lat"):
+        .FPU_OTHERS_LAT(${cpu.get_sv_str("fpu_others_lat")}),
 % endif
-% if cpu.is_defined("rv32zfinx"):
-        .ZFINX(${cpu.get_sv_str("rv32zfinx")}),
+% if cpu.is_defined("zfinx"):
+        .ZFINX(${cpu.get_sv_str("zfinx")}),
 % endif
-% if cpu.is_defined("rv32xcv"):
-        .COREV_PULP(${cpu.get_sv_str("rv32xcv")}),
+% if cpu.is_defined("corev_pulp"):
+        .COREV_PULP(${cpu.get_sv_str("corev_pulp")}),
 % endif
-% if cpu.is_defined("rv32xcvelw"): # Disabled. Use ${cpu.get_sv_str("rv32xcvelw")} if needed
-        .COREV_CLUSTER(0)
+% if cpu.is_defined("corev_cluster"): # Disabled. Use ${cpu.get_sv_str("corev_cluster")} if needed
+        .COREV_CLUSTER(0),
 % endif
 % if cpu.is_defined("num_mhpmcounters"):
-        .NUM_MHPMCOUNTERS(${cpu.get_sv_str("num_mhpmcounters")}),
+        .NUM_MHPMCOUNTERS(${cpu.get_sv_str("num_mhpmcounters")})
 % endif
     ) cv32e40p_top_i (
         .clk_i (clk_i),
