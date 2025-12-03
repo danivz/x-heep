@@ -348,12 +348,10 @@ module cpu_subsystem
 % if cpu.is_defined("corev_pulp"):
         .COREV_PULP(${cpu.get_sv_str("corev_pulp")}),
 % endif
-% if cpu.is_defined("corev_cluster"): # Disabled. Use ${cpu.get_sv_str("corev_cluster")} if needed
-        .COREV_CLUSTER(0),
-% endif
 % if cpu.is_defined("num_mhpmcounters"):
-        .NUM_MHPMCOUNTERS(${cpu.get_sv_str("num_mhpmcounters")})
+        .NUM_MHPMCOUNTERS(${cpu.get_sv_str("num_mhpmcounters")}),
 % endif
+        .COREV_CLUSTER(0)
     ) cv32e40p_top_i (
         .clk_i (clk_i),
         .rst_ni(rst_ni),

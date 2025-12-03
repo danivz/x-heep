@@ -324,7 +324,9 @@ module cpu_subsystem
   end else begin : gen_cv32e40p
 
     // instantiate the core
-    cv32e40p_top #() cv32e40p_top_i (
+    cv32e40p_top #(
+        .COREV_CLUSTER(0)
+    ) cv32e40p_top_i (
         .clk_i (clk_i),
         .rst_ni(rst_ni),
 

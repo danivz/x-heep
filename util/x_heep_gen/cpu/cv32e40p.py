@@ -13,7 +13,6 @@ class cv32e40p(CPU):
         fpu_others_lat=None,
         zfinx=None,
         corev_pulp=None,
-        corev_cluster=None,
         num_mhpmcounters=None,
     ):
         super().__init__("cv32e40p")
@@ -28,9 +27,6 @@ class cv32e40p(CPU):
                 raise ValueError(f"FPU must be 0, 1, True, or False, got '{fpu}'")
 
             self.params["fpu"] = bool(fpu)
-
-        else:
-            self.params["fpu"] = False
 
         if fpu_addmul_lat is not None:
             if fpu is None or fpu in (0, False):
@@ -50,9 +46,6 @@ class cv32e40p(CPU):
 
             self.params["fpu_addmul_lat"] = fpu_addmul_lat
 
-        else:
-            self.params["fpu_addmul_lat"] = 0
-
         if fpu_others_lat is not None:
             if fpu is None or fpu in (0, False):
                 raise ValueError("FPU_OTHERS_LAT requires FPU enabled")
@@ -71,9 +64,6 @@ class cv32e40p(CPU):
 
             self.params["fpu_others_lat"] = fpu_others_lat
 
-        else:
-            self.params["fpu_others_lat"] = 0
-
         if zfinx is not None:
             if fpu is None or fpu in (0, False):
                 raise ValueError("ZFINX requires FPU enabled")
@@ -89,9 +79,6 @@ class cv32e40p(CPU):
 
             self.params["zfinx"] = bool(zfinx)
 
-        else:
-            self.params["zfinx"] = False
-
         if corev_pulp is not None:
             if isinstance(corev_pulp, str):
                 if corev_pulp.lower() not in ("true", "false", "1", "0"):
@@ -106,27 +93,6 @@ class cv32e40p(CPU):
                 )
 
             self.params["corev_pulp"] = bool(corev_pulp)
-
-        else:
-            self.params["corev_pulp"] = False
-
-        if corev_cluster is not None:
-            if isinstance(corev_cluster, str):
-                if corev_cluster.lower() not in ("true", "false", "1", "0"):
-                    raise ValueError(
-                        f"COREV_CLUSTER must be 0, 1, True, or False, got '{corev_cluster}'"
-                    )
-                corev_cluster = corev_cluster.lower() in ("true", "1")
-
-            if corev_cluster not in (0, 1, True, False):
-                raise ValueError(
-                    f"COREV_CLUSTER must be 0, 1, True, or False, got '{corev_cluster}'"
-                )
-
-            self.params["corev_cluster"] = bool(corev_cluster)
-
-        else:
-            self.params["corev_cluster"] = False
 
         if num_mhpmcounters is not None:
             if isinstance(num_mhpmcounters, str):
@@ -144,9 +110,6 @@ class cv32e40p(CPU):
 
             self.params["num_mhpmcounters"] = num_mhpmcounters
 
-        else:
-            self.params["num_mhpmcounters"] = 1
-
     def get_sv_str(self, param_name: str) -> str:
         """
         Get the string representation of the param_name parameter to be used in the SystemVerilog templates.
@@ -162,8 +125,6 @@ class cv32e40p(CPU):
         elif param_name == "zfinx":
             return "1" if value else "0"
         elif param_name == "corev_pulp":
-            return "1" if value else "0"
-        elif param_name == "corev_cluster":
             return "1" if value else "0"
         else:
             return str(value)
