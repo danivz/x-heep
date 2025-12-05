@@ -14,15 +14,19 @@ module xilinx_core_v_mini_mcu_wrapper
 ) (
 
 `ifdef FPGA_ZCU104
-    inout logic clk_300mhz_n,
-    inout logic clk_300mhz_p,
+    inout  logic clk_300mhz_n,
+    inout  logic clk_300mhz_p,
 `elsif FPGA_ZCU102
-    inout logic clk_125mhz_n,
-    inout logic clk_125mhz_p,
+    inout  logic clk_125mhz_n,
+    inout  logic clk_125mhz_p,
+`elsif FPGA_GENESYS2
+    inout  logic clk_200mhz_n,
+    inout  logic clk_200mhz_p,
+    output logic fan_pwm_o,
 `else
-    inout logic clk_i,
+    inout  logic clk_i,
 `endif
-    inout logic rst_i,
+    inout  logic rst_i,
 
     output logic rst_led_o,
     output logic clk_led_o,
@@ -81,6 +85,8 @@ module xilinx_core_v_mini_mcu_wrapper
   // low active reset
 `ifdef FPGA_NEXYS
   assign rst_n = rst_i;
+`elsif FPGA_GENESYS2
+  assign rst_n = rst_i;
 `else
   assign rst_n = !rst_i;
 `endif
@@ -99,6 +105,25 @@ module xilinx_core_v_mini_mcu_wrapper
     end
   end
 
+`ifdef FPGA_GENESYS2
+  // PWM to drive Genesys2 cooling fan (12.5% dc, 25 kHz @ 15 MHz)
+  logic [9:0] pwm_ctr;
+
+  always_ff @(posedge clk_gen or negedge rst_n) begin : pwm_count_process
+    if (!rst_n) begin
+      pwm_ctr <= '0;
+    end else begin
+      if (pwm_ctr + 1 == 10'd600) begin
+        pwm_ctr <= '0;
+      end else begin
+        pwm_ctr <= pwm_ctr + 1;
+      end
+    end
+  end
+
+  assign fan_pwm_o = pwm_ctr < 10'd75 ? 1'b1 : 1'b0;
+`endif
+
   // eXtension Interface
   if_xif #() ext_if ();
 
@@ -112,6 +137,12 @@ module xilinx_core_v_mini_mcu_wrapper
   xilinx_clk_wizard_wrapper xilinx_clk_wizard_wrapper_i (
       .CLK_IN1_D_0_clk_n(clk_125mhz_n),
       .CLK_IN1_D_0_clk_p(clk_125mhz_p),
+      .clk_out1_0(clk_gen)
+  );
+`elsif FPGA_GENESYS2
+  xilinx_clk_wizard_wrapper xilinx_clk_wizard_wrapper_i (
+      .CLK_IN1_D_0_clk_n(clk_200mhz_n),
+      .CLK_IN1_D_0_clk_p(clk_200mhz_p),
       .clk_out1_0(clk_gen)
   );
 `elsif FPGA_NEXYS

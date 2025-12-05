@@ -6,7 +6,7 @@ This project offers X-HEEP implementetions on Xilinx FPGAs.
 
 In this version, the X-HEEP architecture is implemented on the programmable logic (PL) side of the FPGA, and its input/output are connected to the available headers on the FPGA board.
 
-Four FPGA boards are supported: the Xilinx Pynq-z2, Nexys-A7-100t, the ZCU104 and the ZCU102.
+The following FPGA development boards are supported: TUL Pynq-z2, Digilent Nexys-A7-100t, Digilent Genesys2, Xilinx ZCU102 and Xilinx ZCU104.
 
 1. Make sure you have the FPGA board files installed in your Vivado.
 > For example, for the Pynq-Z2 board, use the documentation provided at the following [link](https://pynq.readthedocs.io/en/v2.5/overlay_design_methodology/board_settings.html) to download and install them.
@@ -29,7 +29,7 @@ To build and program the bitstream for your FPGA with vivado, make sure you have
 make vivado-fpga FPGA_BOARD=<BOARD_NAME>
 ```
 
-where `<BOARD_NAME>` can be `pynq-z2`, `nexys-a7-100t`, `zcu104` or `zcu102`. From now on we will refer to it as `<BOARD_NAME>`.
+where `<BOARD_NAME>` can be `pynq-z2`, `nexys-a7-100t`, `genesys2`, `zcu102` or `zcu104`. From now on we will refer to it as `<BOARD_NAME>`.
 
 Adding the fusesoc flag `use_bscane_xilinx` enables the native Xilinx scanchain for the JTAG interface in the on chip debug module (Currently only supported for the `pynq-z2` board):
 
